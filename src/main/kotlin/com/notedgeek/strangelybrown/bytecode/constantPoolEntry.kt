@@ -50,7 +50,7 @@ internal class ConstantUtf8 : ConstantPoolEntry(UTF8) {
 
 internal class ConstantClass : ConstantPoolEntry(CLASS) {
     internal lateinit var name: String
-    private var nameIndex = 0
+    internal var nameIndex = 0
 
     override fun loadFromDataInput(dataInput: DataInput) {
         nameIndex = dataInput.readUnsignedShort()

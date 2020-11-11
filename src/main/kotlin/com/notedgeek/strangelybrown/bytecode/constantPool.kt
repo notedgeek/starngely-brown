@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import java.io.DataInput
 import java.io.DataOutput
 
-internal class ConstantPool(private val size: Int) {
+internal class ConstantPool(private val size: Int = 10) {
 
     companion object {
         fun loadAndLink(dataInput: DataInput): ConstantPool = ConstantPool(dataInput.readUnsignedShort()).apply {
@@ -91,6 +91,30 @@ internal class ConstantPool(private val size: Int) {
         }
     }
 
+    internal fun ensureClass(className: String): Int {
+        val index = getIndexOfClassName(className)
+        if (index > 0) {
+            return index
+        }
+        val constantClass = ConstantClass()
+        constantClass.name = className
+        constantClass.nameIndex = ensureConstantUtfString(className)
+        entries.add(constantClass)
+        return entries.size - 1
+    }
+
+    private fun ensureConstantUtfString(string: String): Int {
+        val index = getIndexOfUtfString(string)
+        if (index > 0) {
+            return index
+        }
+        val constantUtf8 = ConstantUtf8()
+        constantUtf8.value = string
+        entries.add(constantUtf8)
+        return entries.size - 1
+    }
+
+
     internal fun getIndexOfUtfString(string: String): Int {
         for (entryNumber in 1 until entries.size) {
             val entry = entries[entryNumber]
@@ -102,7 +126,7 @@ internal class ConstantPool(private val size: Int) {
         return -1
     }
 
-    fun getIndexOfClassName(string: String): Int {
+    internal fun getIndexOfClassName(string: String): Int {
         for (entryNumber in 1 until entries.size) {
             val entry = entries[entryNumber]
             if (entry != null && entry.tag == CLASS && (entry as ConstantClass).name == string) {

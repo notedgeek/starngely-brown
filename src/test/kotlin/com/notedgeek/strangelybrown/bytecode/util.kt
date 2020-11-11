@@ -1,5 +1,7 @@
 package com.notedgeek.strangelybrown.bytecode
 
+import com.notedgeek.strangelybrown.bytecode.builder.ClassBuilder
+import com.notedgeek.strangelybrown.bytecode.builder.writeClass
 import java.io.*
 
 class Util
@@ -27,7 +29,18 @@ internal class RoundTripClassLoader(val pkg: String) {
         writeClassfile(clazz, DataOutputStream(byteArrayOutputStream))
         val bytes = byteArrayOutputStream.toByteArray()
         loadClassFile(DataInputStream(ByteArrayInputStream(bytes)))
-        return MyClassLoader(this.javaClass.classLoader).getClassFromByte(clazz.name, bytes)
+        return MyClassLoader(Util::class.java.classLoader).getClassFromByte(clazz.name, bytes)
     }
 }
+
+internal fun loadClassBuilderClass(classBuilder: ClassBuilder): Class<*> {
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    val dataOutput = DataOutputStream(byteArrayOutputStream)
+    writeClass(dataOutput, classBuilder) {}
+    val bytes = byteArrayOutputStream.toByteArray()
+    val dataInput = DataInputStream(ByteArrayInputStream(bytes))
+    loadClassFile(dataInput)
+    return MyClassLoader(Util::class.java.classLoader).getClassFromByte(classBuilder.name, bytes)
+}
+
 
