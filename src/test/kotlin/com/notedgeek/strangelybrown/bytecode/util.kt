@@ -1,7 +1,5 @@
 package com.notedgeek.strangelybrown.bytecode
 
-import com.notedgeek.strangelybrown.bytecode.builder.ClassBuilder
-import com.notedgeek.strangelybrown.bytecode.builder.writeClass
 import java.io.*
 
 class Util
@@ -14,14 +12,14 @@ fun getClassDataInput(pkg: String, name: String): DataInput {
 }
 
 internal class MyClassLoader internal constructor(parent: ClassLoader) : ClassLoader(parent) {
-    fun getClassFromByte(name: String, bytes: ByteArray): Class<*> {
-        val c = defineClass(name.replace('/', '.'), bytes, 0, bytes.size)
+    fun getClassFromByte(name: String, bytecode: ByteArray): Class<*> {
+        val c = defineClass(name.replace('/', '.'), bytecode, 0, bytecode.size)
         resolveClass(c)
         return c
     }
 }
 
-internal class RoundTripClassLoader(val pkg: String) {
+internal class RoundTripClassLoader(private val pkg: String) {
     fun loadClass(name: String): Class<*> {
         val dataInput = getClassDataInput(pkg, name)
         val clazz = loadClassFile(dataInput)
@@ -33,14 +31,10 @@ internal class RoundTripClassLoader(val pkg: String) {
     }
 }
 
-internal fun loadClassBuilderClass(classBuilder: ClassBuilder): Class<*> {
-    val byteArrayOutputStream = ByteArrayOutputStream()
-    val dataOutput = DataOutputStream(byteArrayOutputStream)
-    writeClass(dataOutput, classBuilder) {}
-    val bytes = byteArrayOutputStream.toByteArray()
-    val dataInput = DataInputStream(ByteArrayInputStream(bytes))
-    loadClassFile(dataInput)
-    return MyClassLoader(Util::class.java.classLoader).getClassFromByte(classBuilder.name, bytes)
+internal fun loadClassBuilderClass(byteCode: ByteArray): Class<*> {
+    val dataInput = DataInputStream(ByteArrayInputStream(byteCode))
+    val clazz = loadClassFile(dataInput)
+    return MyClassLoader(Util::class.java.classLoader).getClassFromByte(clazz.name, byteCode)
 }
 
 
