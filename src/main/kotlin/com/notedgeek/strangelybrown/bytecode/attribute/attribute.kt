@@ -2,7 +2,10 @@ package com.notedgeek.strangelybrown.bytecode.attribute
 
 import com.notedgeek.strangelybrown.bytecode.ConstantPool
 import org.slf4j.LoggerFactory
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.DataInput
+import java.io.DataOutput
+import java.io.DataOutputStream
 
 private val logger = LoggerFactory.getLogger("attributeLoader")
 
@@ -45,7 +48,7 @@ internal fun writeAttributes(attributes: Map<String, Attribute>, dataOutput: Dat
     val attributeCount = attributes.size
     dataOutput.writeShort(attributeCount)
     if (attributeCount == 0) {
-        logger.trace("not attributes")
+        logger.trace("no attributes")
         return
     }
     logger.debug("attribute count : {}", attributeCount)

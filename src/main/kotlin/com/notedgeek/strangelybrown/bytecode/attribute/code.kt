@@ -12,7 +12,7 @@ internal class CodeAttribute : Attribute() {
     var maxLocals = 0
     val exceptionTable: MutableList<ExceptionTableEntry> = ArrayList()
     var attributes: Map<String, Attribute> = HashMap()
-    private lateinit var code: ByteArray
+    var code: ByteArray = byteArrayOf()
 
     override fun loadFromDataInput(dataInput: DataInput, constantPool: ConstantPool) {
         maxStack = dataInput.readUnsignedShort()

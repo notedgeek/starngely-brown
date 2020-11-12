@@ -12,6 +12,7 @@ class ClassfileBuilderTest {
         val bytecode = buildBytecode {
             name("com.notedgeek.strangelybrown.bytecode.testClasses.java.EmptyTestClass")
             implements("java.io.Serializable", "java.lang.Runnable")
+            method {}
         }
         val c = loadClassBuilderClass(bytecode)
         // val o = c.getDeclaredConstructor().newInstance()

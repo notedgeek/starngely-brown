@@ -34,11 +34,10 @@ internal abstract class AccessControlled(val accessBitmap: Int) {
     }
 }
 
-internal abstract class Member(accessBitmap: Int) : AccessControlled(accessBitmap) {
-    lateinit var name: String
-    lateinit var descriptor: String
-    lateinit var attributes: Map<String, Attribute>
-
+internal abstract class Member(
+    accessBitmap: Int, val name: String, val descriptor: String,
+    val attributes: Map<String, Attribute>
+) : AccessControlled(accessBitmap) {
     val isPrivate: Boolean
         get() = testAccessFlag(ACC_PRIVATE)
     val isProtected: Boolean
@@ -47,7 +46,8 @@ internal abstract class Member(accessBitmap: Int) : AccessControlled(accessBitma
         get() = testAccessFlag(ACC_STATIC)
 }
 
-internal class Field(accessBitmap: Int) : Member(accessBitmap) {
+internal class Field(accessBitmap: Int, name: String, descriptor: String, attributes: Map<String, Attribute>) :
+    Member(accessBitmap, name, descriptor, attributes) {
     val isVolatile: Boolean
         get() = testAccessFlag(ACC_VOLATILE)
     val isTransient: Boolean
@@ -56,7 +56,8 @@ internal class Field(accessBitmap: Int) : Member(accessBitmap) {
         get() = testAccessFlag(ACC_ENUM)
 }
 
-internal class Method(accessBitmap: Int) : Member(accessBitmap) {
+internal class Method(accessBitmap: Int, name: String, descriptor: String, attributes: Map<String, Attribute>) :
+    Member(accessBitmap, name, descriptor, attributes) {
     val isSynchronized: Boolean
         get() = testAccessFlag(ACC_SYNCHRONIZED)
     val isBridge: Boolean

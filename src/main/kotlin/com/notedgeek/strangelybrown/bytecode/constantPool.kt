@@ -103,7 +103,7 @@ internal class ConstantPool(private val size: Int = 10) {
         return entries.size - 1
     }
 
-    private fun ensureConstantUtfString(string: String): Int {
+    internal fun ensureConstantUtfString(string: String): Int {
         val index = getIndexOfUtfString(string)
         if (index > 0) {
             return index

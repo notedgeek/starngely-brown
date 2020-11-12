@@ -63,6 +63,9 @@ class ClassBuilder() {
             this.interfaceNames.add(interfaceName)
         }
     }
+
+    fun method(block: MethodBuilder.() -> Unit) = methods.add(buildMethod(constantPool, block))
+
 }
 
 private fun String.fromDotted() = this.replace('.', '/')

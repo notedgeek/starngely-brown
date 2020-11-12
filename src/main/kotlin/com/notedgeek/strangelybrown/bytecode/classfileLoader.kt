@@ -80,14 +80,14 @@ private fun loadFields(di: DataInput, constantPool: ConstantPool): List<Field> {
     return fields
 }
 
-private fun loadField(di: DataInput, constantPool: ConstantPool): Field {
-    val field = Field(di.readUnsignedShort())
-    field.name = constantPool.getUtfValue(di)
-    field.descriptor = constantPool.getUtfValue(di)
-    logger.trace("loading field with name \"{}\", and descriptor \"{}\"", field.name, field.descriptor)
+private fun loadField(dataInput: DataInput, constantPool: ConstantPool): Field {
+    val accessFlags = dataInput.readUnsignedShort()
+    val name = constantPool.getUtfValue(dataInput)
+    val descriptor = constantPool.getUtfValue(dataInput)
+    logger.trace("loading field with name \"{}\", and descriptor \"{}\"", name, descriptor)
     logger.trace("loading field attributes")
-    field.attributes = loadAttributes(di, constantPool)
-    return field
+    val attributes = loadAttributes(dataInput, constantPool)
+    return Field(accessFlags, name, descriptor, attributes)
 }
 
 private fun loadMethods(di: DataInput, constantPool: ConstantPool): List<Method> {
@@ -105,14 +105,14 @@ private fun loadMethods(di: DataInput, constantPool: ConstantPool): List<Method>
     return methods
 }
 
-private fun loadMethod(di: DataInput, constantPool: ConstantPool): Method {
-    val method = Method(di.readUnsignedShort())
-    method.name = constantPool.getUtfValue(di)
-    method.descriptor = constantPool.getUtfValue(di)
-    logger.trace("loading method with name \"{}\", and descriptor \"{}\"", method.name, method.descriptor)
+private fun loadMethod(dataInput: DataInput, constantPool: ConstantPool): Method {
+    val accessFlags = dataInput.readUnsignedShort()
+    val name = constantPool.getUtfValue(dataInput)
+    val descriptor = constantPool.getUtfValue(dataInput)
+    logger.trace("loading method with name \"{}\", and descriptor \"{}\"", name, descriptor)
     logger.trace("loading method attributes")
-    method.attributes = loadAttributes(di, constantPool)
-    return method
+    val attributes = loadAttributes(dataInput, constantPool)
+    return Method(accessFlags, name, descriptor, attributes)
 }
 
 
