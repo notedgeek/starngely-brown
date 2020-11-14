@@ -7,7 +7,7 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.io.DataOutputStream
 
-private val logger = LoggerFactory.getLogger("attributeLoader")
+private val logger = LoggerFactory.getLogger("attribute")
 
 internal abstract class Attribute {
 

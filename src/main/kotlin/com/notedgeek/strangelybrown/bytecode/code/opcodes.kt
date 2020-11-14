@@ -26,6 +26,7 @@ const val ILOAD_1 = 0x1b
 const val ILOAD_2 = 0x1c
 const val ILOAD_3 = 0x1d
 const val IMUL = 0x68
+const val INVOKE_VIRTUAL = 0xb6
 const val INVOKE_SPECIAL = 0xb7
 const val IRETURN = 0xac
 const val ISTORE = 0x36
@@ -36,4 +37,6 @@ const val ISTORE_3 = 0x3e
 const val ISUB = 0x64
 const val LDC = 0x12
 const val LDC_W = 0x13
+const val GET_STATIC = 0xb2
 const val RETURN = 0xb1
+

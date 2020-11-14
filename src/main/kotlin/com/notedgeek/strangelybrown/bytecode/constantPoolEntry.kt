@@ -211,8 +211,8 @@ internal class ConstantFieldRef : ConstantMethodOrFieldRef(FIELD_REF) {
 }
 
 internal class ConstantString : ConstantPoolEntry(STRING) {
-    private var utf8Index = 0
-    private var utf8Value: String? = null
+    var utf8Index = 0
+    var utf8Value: String? = null
 
     override fun loadFromDataInput(dataInput: DataInput) {
         utf8Index = dataInput.readUnsignedShort()

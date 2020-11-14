@@ -8,6 +8,7 @@ import com.notedgeek.strangelybrown.bytecode.code.buildCode
 internal fun buildMethod(constantPool: ConstantPool, block: MethodBuilder.() -> Unit) =
     MethodBuilder(constantPool).apply(block).toMethod()
 
+@ScopeMarker
 class MethodBuilder internal constructor(private val constantPool: ConstantPool) {
     private var accessFlags = ACC_PUBLIC
     private var name = "aMethod"
@@ -34,6 +35,10 @@ class MethodBuilder internal constructor(private val constantPool: ConstantPool)
             maxLocals += param.width
         }
         codeAttribute = buildCode(constantPool, maxLocals, block)
+    }
+
+    fun access(accessFlags: Int) {
+        this.accessFlags = accessFlags
     }
 
     internal fun toMethod(): Method {

@@ -23,7 +23,7 @@ internal class CodeAttribute : Attribute() {
         dataInput.readFully(code)
         logger.trace("code segment")
         for (b in code) {
-            logger.trace(String.format("%02X", b))
+            logger.trace(String.format("0x%02X", b))
         }
         val exceptionTableLength = dataInput.readUnsignedShort()
         logger.trace("exceptionTableLength: {}", exceptionTableLength)

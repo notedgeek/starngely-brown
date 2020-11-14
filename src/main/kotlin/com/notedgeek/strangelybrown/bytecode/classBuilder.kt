@@ -14,6 +14,10 @@ fun buildBytecode(classBuilder: ClassBuilder = ClassBuilder(), block: ClassBuild
     return byteArrayOutputStream.toByteArray()
 }
 
+@DslMarker
+annotation class ScopeMarker
+
+@ScopeMarker
 class ClassBuilder() {
 
     private var minorVersion = 0
@@ -84,6 +88,7 @@ class ClassBuilder() {
                 buildMethod(constantPool) {
                     name("<init>")
                     descriptor("()V")
+                    access(ACC_PUBLIC)
                     code {
                         aLoad(0)
                         invokeSpecial("java/lang/Object", "<init>", "()V")

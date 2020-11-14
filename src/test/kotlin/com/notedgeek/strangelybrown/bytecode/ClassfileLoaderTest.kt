@@ -11,7 +11,14 @@ class ClassfileLoaderTest {
     @Test
     fun `load EmptyTestClass`() {
         val c = loader.loadClass("EmptyTestClass")
-        val o = c.getDeclaredConstructor().newInstance()
+        c.getDeclaredConstructor().newInstance()
+    }
+
+    @Test
+    fun `load HelloWorldTestClass`() {
+        val c = loader.loadClass("HelloWorldTestClass")
+        val m = c.getMethod("main", Array<String>::class.java)
+        m.invoke(null, null)
     }
 
     @Test
@@ -19,7 +26,7 @@ class ClassfileLoaderTest {
         val c = loader.loadClass("Greeter")
         val o = c.getDeclaredConstructor().newInstance()
         val m = c.getMethod("greet", String::class.java)
-        assertThat(m.invoke(o,"Butch")).isEqualTo("Hello Butch!")
+        assertThat(m.invoke(o, "Butch")).isEqualTo("Hello Butch!")
     }
 
     @Test
