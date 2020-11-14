@@ -6,7 +6,7 @@ internal sealed class Type
 
 internal sealed class FieldType(val width: Int = 1) : Type()
 
-internal open class BaseType(val char: Char, width: Int = 1) : FieldType(width) {
+internal open class BaseType(val char: Char, size: Int = 1) : FieldType(size) {
 
     companion object {
         fun fromChar(char: Char): BaseType = when (char) {
@@ -25,7 +25,7 @@ internal open class BaseType(val char: Char, width: Int = 1) : FieldType(width) 
     override fun toString() = "$char"
 }
 
-internal object TByte : BaseType('B') {}
+internal object TByte : BaseType('B')
 internal object TChar : BaseType('C')
 internal object TDouble : BaseType('D', 2)
 internal object TFloat : BaseType('F')

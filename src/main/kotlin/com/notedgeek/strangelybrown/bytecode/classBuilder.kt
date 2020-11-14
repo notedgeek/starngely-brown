@@ -8,7 +8,7 @@ import java.util.*
 
 fun buildClass(classBuilder: ClassBuilder = ClassBuilder(), block: ClassBuilder.() -> Unit) = classBuilder.apply(block)
 
-fun buildBytecode(classBuilder: ClassBuilder = ClassBuilder(), block: ClassBuilder.() -> Unit = {}): ByteArray {
+fun bytecodeFor(classBuilder: ClassBuilder = ClassBuilder(), block: ClassBuilder.() -> Unit = {}): ByteArray {
     val byteArrayOutputStream = ByteArrayOutputStream()
     classBuilder.apply(block).write(DataOutputStream(byteArrayOutputStream))
     return byteArrayOutputStream.toByteArray()
@@ -18,7 +18,7 @@ fun buildBytecode(classBuilder: ClassBuilder = ClassBuilder(), block: ClassBuild
 annotation class ScopeMarker
 
 @ScopeMarker
-class ClassBuilder() {
+class ClassBuilder {
 
     private var minorVersion = 0
     private var majorVersion = 52
@@ -30,7 +30,7 @@ class ClassBuilder() {
     private val fields = LinkedList<Field>()
     private val methods = LinkedList<Method>()
     private val attributes = HashMap<String, Attribute>()
-    private var addDefaultConrtructor = true
+    private var addDefaultConstructor = true
 
 
     fun write(dataOutput: DataOutput) {
@@ -38,11 +38,12 @@ class ClassBuilder() {
     }
 
     fun name(name: String) {
-        this.name = name.fromDotted()
+        this.name = name
     }
 
     fun superclassName(superclassName: String) {
-        this.superclassName = superclassName.fromDotted()
+        this.superclassName = superclassName
+
     }
 
     fun access(accessFlags: Int) {
@@ -50,7 +51,7 @@ class ClassBuilder() {
     }
 
     fun implements(vararg interfaceNames: String) {
-        for (interfaceName in interfaceNames.map(String::fromDotted)) {
+        for (interfaceName in interfaceNames) {
             constantPool.ensureClass(interfaceName)
             this.interfaceNames.add(interfaceName)
         }
@@ -59,7 +60,7 @@ class ClassBuilder() {
     fun method(block: MethodBuilder.() -> Unit) {
         val method = buildMethod(constantPool, block)
         if (method.name == "<init>") {
-            addDefaultConrtructor = false
+            addDefaultConstructor = false
         }
         methods.add(method)
     }
@@ -83,7 +84,7 @@ class ClassBuilder() {
     }
 
     private fun addDefaultConstructorIfNecessary() {
-        if (addDefaultConrtructor) {
+        if (addDefaultConstructor) {
             methods.addFirst(
                 buildMethod(constantPool) {
                     name("<init>")
@@ -98,7 +99,4 @@ class ClassBuilder() {
             )
         }
     }
-
 }
-
-private fun String.fromDotted() = this.replace('.', '/')

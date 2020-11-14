@@ -26,13 +26,13 @@ class CodeBuilder internal constructor(private var constantPool: ConstantPool, v
         return result
     }
 
-    fun methodRef(classname: String, name: String, descriptor: String) =
+    private fun methodRef(classname: String, name: String, descriptor: String) =
         constantPool.ensureMethodRef(classname, name, descriptor)
 
-    fun fieldRef(classname: String, name: String, descriptor: String) =
+    private fun fieldRef(classname: String, name: String, descriptor: String) =
         constantPool.ensureFieldRef(classname, name, descriptor)
 
-    fun constantString(string: String) = constantPool.ensureConstantString(string)
+    private fun constantString(string: String) = constantPool.ensureConstantString(string)
 
     fun aLoad(i: Int) {
         if (i < 4) {
@@ -56,12 +56,8 @@ class CodeBuilder internal constructor(private var constantPool: ConstantPool, v
     }
 
     fun getStatic(classname: String, name: String, descriptor: String) {
-        getStatic(fieldRef(classname, name, descriptor))
-    }
-
-    fun getStatic(i: Int) {
         instruction(GET_STATIC)
-        addShort(i)
+        cpIndex(fieldRef(classname, name, descriptor))
         incStack()
     }
 
@@ -87,12 +83,6 @@ class CodeBuilder internal constructor(private var constantPool: ConstantPool, v
         }
     }
 
-    private fun addShort(vararg ints: Int) {
-        for (int in ints) {
-            dataOutput.writeShort(int)
-        }
-    }
-
     private fun instruction(vararg ints: Int) = addByte(*ints)
 
     private fun cpIndex(int: Int) = dataOutput.writeShort(int)
@@ -109,7 +99,7 @@ class CodeBuilder internal constructor(private var constantPool: ConstantPool, v
     }
 
     private fun stackCountForDescriptor(descriptor: String): Int {
-        val paramTypes = TypeParser(descriptor).methodType().paramList
+        val paramTypes = TypeParser.method(descriptor).paramList
         var result = 0
         for (paramType in paramTypes) {
             result += paramType.width
