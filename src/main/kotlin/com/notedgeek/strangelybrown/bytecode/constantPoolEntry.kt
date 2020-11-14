@@ -78,8 +78,8 @@ internal class ConstantClass : ConstantPoolEntry(CLASS) {
 internal class ConstantNameAndType : ConstantPoolEntry(NAME_AND_TYPE) {
     lateinit var name: String
     lateinit var descriptor: String
-    private var nameIndex = 0
-    private var descriptorIndex = 0
+    var nameIndex = 0
+    var descriptorIndex = 0
 
     override fun loadFromDataInput(dataInput: DataInput) {
         nameIndex = dataInput.readUnsignedShort()

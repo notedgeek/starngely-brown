@@ -114,6 +114,34 @@ internal class ConstantPool(private val size: Int = 10) {
         return entries.size - 1
     }
 
+    internal fun ensureMethodRef(className: String, name: String, descriptor: String): Int {
+        val index = getIndexOfMethodRef(className, name, descriptor)
+        if (index > 0) {
+            return index
+        }
+        val methodRef = ConstantMethodRef()
+        methodRef.className = className
+        methodRef.classIndex = ensureClass(className)
+        methodRef.name = name
+        methodRef.descriptor = descriptor
+        methodRef.nameAndTypeIndex = ensureNameAndType(name, descriptor)
+        entries.add(methodRef)
+        return entries.size - 1
+    }
+
+    internal fun ensureNameAndType(name: String, descriptor: String): Int {
+        val index = getIndexOfNameAndType(name, descriptor)
+        if (index > 0) {
+            return index
+        }
+        val nameAndType = ConstantNameAndType()
+        nameAndType.name = name
+        nameAndType.nameIndex = ensureConstantUtfString(name)
+        nameAndType.descriptor = descriptor
+        nameAndType.descriptorIndex = ensureConstantUtfString(descriptor)
+        entries.add(nameAndType)
+        return entries.size - 1
+    }
 
     internal fun getIndexOfUtfString(string: String): Int {
         for (entryNumber in 1 until entries.size) {
@@ -132,6 +160,34 @@ internal class ConstantPool(private val size: Int = 10) {
             if (entry != null && entry.tag == CLASS && (entry as ConstantClass).name == string) {
                 logger.trace("index of class \"{}\" is {}", string, entryNumber)
                 return entryNumber
+            }
+        }
+        return -1
+    }
+
+    internal fun getIndexOfMethodRef(className: String, name: String, descriptor: String): Int {
+        for (entryNumber in 1 until entries.size) {
+            val entry = entries[entryNumber]
+            if (entry != null && entry.tag == METHOD_REF) {
+                val methodRef = entry as ConstantMethodRef
+                if (methodRef.className == className && methodRef.name == name && methodRef.descriptor == descriptor) {
+                    logger.trace("index of method \"{}\" \"{}\" \"{}\" is {}", className, name, descriptor, entryNumber)
+                    return entryNumber
+                }
+            }
+        }
+        return -1
+    }
+
+    internal fun getIndexOfNameAndType(name: String, descriptor: String): Int {
+        for (entryNumber in 1 until entries.size) {
+            val entry = entries[entryNumber]
+            if (entry != null && entry.tag == NAME_AND_TYPE) {
+                val nameAndType = entry as ConstantNameAndType
+                if (nameAndType.name == name && nameAndType.descriptor == descriptor) {
+                    logger.debug("index of nameAndType \"{}\" \"{}\" is {}", name, descriptor, entryNumber)
+                    return entryNumber
+                }
             }
         }
         return -1

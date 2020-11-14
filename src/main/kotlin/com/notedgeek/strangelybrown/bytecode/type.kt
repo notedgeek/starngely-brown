@@ -60,7 +60,7 @@ internal class MethodType(val returnType: Type, vararg params: FieldType) {
 }
 
 
-private class TypeParser(string: String) {
+internal class TypeParser(string: String) {
 
     companion object {
         fun field(string: String) = TypeParser(string).fieldType()

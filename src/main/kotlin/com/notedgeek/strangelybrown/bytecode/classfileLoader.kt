@@ -18,6 +18,7 @@ internal fun loadClassFile(dataInput: DataInput): Clazz {
     logger.trace("major version: $majorVersion")
     val constantPool = ConstantPool.loadAndLink(dataInput)
     val accessFlags = dataInput.readUnsignedShort()
+    logger.trace("access flags: ${Integer.toHexString(accessFlags)}")
     val className = constantPool.getClassName(dataInput)
     logger.trace("class name $className")
     val superclassName = constantPool.getClassName(dataInput)
