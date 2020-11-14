@@ -2,24 +2,24 @@ package com.notedgeek.strangelybrown.bytecode
 
 import com.notedgeek.strangelybrown.bytecode.attribute.Attribute
 
-private const val ACC_PUBLIC = 0x001
-private const val ACC_PRIVATE = 0x0002
-private const val ACC_PROTECTED = 0x0004
-private const val ACC_STATIC = 0x0008
-private const val ACC_FINAL = 0x010
-private const val ACC_SUPER = 0x020
-private const val ACC_SYNCHRONIZED = 0x0020
-private const val ACC_BRIDGE = 0x0040
-private const val ACC_VOLATILE = 0x0040
-private const val ACC_VARARGS = 0x0080
-private const val ACC_TRANSIENT = 0x0080
-private const val ACC_STRICT = 0x0800
-private const val ACC_NATIVE = 0x0100
-private const val ACC_INTERFACE = 0x200
-private const val ACC_ABSTRACT = 0x400
-private const val ACC_SYNTHETIC = 0x1000
-private const val ACC_ANNOTATION = 0x2000
-private const val ACC_ENUM = 0x4000
+const val ACC_PUBLIC = 0x001
+const val ACC_PRIVATE = 0x0002
+const val ACC_PROTECTED = 0x0004
+const val ACC_STATIC = 0x0008
+const val ACC_FINAL = 0x010
+const val ACC_SUPER = 0x020
+const val ACC_SYNCHRONIZED = 0x0020
+const val ACC_BRIDGE = 0x0040
+const val ACC_VOLATILE = 0x0040
+const val ACC_VARARGS = 0x0080
+const val ACC_TRANSIENT = 0x0080
+const val ACC_STRICT = 0x0800
+const val ACC_NATIVE = 0x0100
+const val ACC_INTERFACE = 0x200
+const val ACC_ABSTRACT = 0x400
+const val ACC_SYNTHETIC = 0x1000
+const val ACC_ANNOTATION = 0x2000
+const val ACC_ENUM = 0x4000
 
 internal abstract class AccessControlled(val accessBitmap: Int) {
     val isPublic: Boolean
