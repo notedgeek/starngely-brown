@@ -1,5 +1,6 @@
 package com.notedgeek.strangelybrown.bytecode.builder
 
+import com.notedgeek.strangelybrown.bytecode.ACC_STATIC
 import com.notedgeek.strangelybrown.bytecode.ConstantPool
 import com.notedgeek.strangelybrown.bytecode.Method
 import com.notedgeek.strangelybrown.bytecode.attribute.Attribute
@@ -9,14 +10,14 @@ internal fun buildMethod(constantPool: ConstantPool, block: MethodBuilder.() -> 
     MethodBuilder(constantPool).apply(block).toMethod()
 
 class MethodBuilder internal constructor(private val constantPool: ConstantPool) {
-    private var accessFlags = 0
+    private var accessFlags = ACC_STATIC
     private var name = "aMethod"
     private var descriptor = "()V"
     private var attributes = HashMap<String, Attribute>()
     private val codeAttribute = CodeAttribute()
 
     init {
-        codeAttribute.maxLocals = 1
+        codeAttribute.maxLocals = 0
         codeAttribute.code = byteArrayOf(0xb1.toByte())
     }
 
