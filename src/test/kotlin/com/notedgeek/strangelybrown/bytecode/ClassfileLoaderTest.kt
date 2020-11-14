@@ -3,6 +3,7 @@ package com.notedgeek.strangelybrown.bytecode
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.util.function.Supplier
+import kotlin.test.assertTrue
 
 private val loader = RoundTripClassLoader("com/notedgeek/strangelybrown/bytecode/testClasses/java")
 
@@ -41,7 +42,8 @@ class ClassfileLoaderTest {
     fun `load StringSupplier`() {
         val c = loader.loadClass("StringSupplier")
         val s = "This ia a string."
-        val o = c.getDeclaredConstructor(String::class.java).newInstance(s) as Supplier<String>
+        val o = c.getDeclaredConstructor(String::class.java).newInstance(s)
+        assertTrue(o is Supplier<*>)
         assertThat(o.get()).isEqualTo(s)
     }
 

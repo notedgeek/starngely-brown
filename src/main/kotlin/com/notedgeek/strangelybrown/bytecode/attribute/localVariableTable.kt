@@ -43,7 +43,6 @@ internal class LocalVariableTableAttribute : Attribute() {
         lateinit var name: String
         lateinit var descriptor: String
         var index = 0
-        @Throws(IOException::class)
         fun toDataOutput(dataOutput: DataOutput, constantPool: ConstantPool) {
             dataOutput.writeShort(startPc)
             dataOutput.writeShort(length)
@@ -53,7 +52,6 @@ internal class LocalVariableTableAttribute : Attribute() {
         }
 
         companion object {
-            @Throws(IOException::class)
             fun fromDataInput(dataInput: DataInput, constantPool: ConstantPool): LocalVariableTableEntry {
                 val entry = LocalVariableTableEntry()
                 entry.startPc = dataInput.readUnsignedShort()

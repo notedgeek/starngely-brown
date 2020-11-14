@@ -11,7 +11,7 @@ internal fun buildCode(constantPool: ConstantPool, maxLocals: Int, block: CodeBu
     CodeBuilder(constantPool, maxLocals).apply(block).toCodeAttribute()
 
 @ScopeMarker
-class CodeBuilder internal constructor(var constantPool: ConstantPool, var maxLocals: Int) {
+class CodeBuilder internal constructor(private var constantPool: ConstantPool, var maxLocals: Int) {
 
     var maxStack = 0
     var stack = 0
